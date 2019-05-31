@@ -1,0 +1,12 @@
+{
+  "name": "docset",
+  "version": "0.0.0",
+  "description": "wraps docset on disk",
+  "main": "index.js",
+  "author": "dmr",
+  "license": "WTFPL",
+  "dependencies": {
+    "better-sqlite3": "^5.4.0",
+    "sql-bricks-sqlite": "^0.1.0"
+  }
+}
