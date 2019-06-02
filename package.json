@@ -5,6 +5,14 @@
   "main": "index.js",
   "author": "dmr",
   "license": "WTFPL",
+  "homepage": "https://github.com/dradetsky/docset#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dradetsky/docset.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dradetsky/docset/issues",
+  }
   "dependencies": {
     "better-sqlite3": "^5.4.0",
     "sql-bricks-sqlite": "^0.1.0"
