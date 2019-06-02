@@ -6,7 +6,11 @@ Wraps a Dash docset for use in dash-like applications
 installation
 ------------
 
-look, i'll put it up on npm later, ok? don't judge me.
+~~look, i'll put it up on npm later, ok? don't judge me.~~
+
+`yarn add docset`
+
+`npm install docset`
 
 usage
 -----
