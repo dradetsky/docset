@@ -8,6 +8,14 @@ class Docset {
     this.dsRoot = dsRoot
   }
 
+  get name () {
+    return path.basename(this.dsRoot, '.docset')
+  }
+
+  get basename () {
+    return path.basename(this.dsRoot)
+  }
+
   get plist () {
     return path.join(this.dsRoot, 'Contents/Info.plist')
   }
@@ -18,6 +26,21 @@ class Docset {
 
   get docRoot () {
     return path.join(this.dsRoot, 'Contents/Resources/Documents')
+  }
+
+  getFullPathTo(idxPath) {
+    const fullPath = path.join(this.docRoot, idxPath)
+    return fullPath
+  }
+
+  getRelativePathTo(idxPath) {
+    const relPath = path.join(this.basename, idxPath)
+    return relPath
+  }
+
+  getLinkTo(idxPath) {
+    const link = path.join(this.basename, 'Contents/Resources/Documents', idxPath)
+    return link
   }
 }
 
@@ -50,6 +73,19 @@ class DocsetHandle {
   lookup(str) {
     const qry = this.lookupQuery(str)
     return this.query(qry.toString())
+  }
+
+  lookupAugmented(str) {
+    const irecs = this.lookup(str)
+    const arecs = irecs.map(r => this.augment(r))
+    return arecs
+  }
+
+  augment(idxRec) {
+    const augRec = Object.assign({}, idxRec)
+    augRec.set = this.docset.name
+    augRec.link = this.docset.getLinkTo(augRec.path)
+    return augRec
   }
 }
 
