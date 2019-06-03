@@ -61,30 +61,35 @@ class DocsetHandle {
     return data
   }
 
-  lookupQuery(str) {
+  lookupQuery(str, opts) {
     let qry = sql.select().from('searchIndex')
     qry = qry.order(sql('length(name)'))
     qry = qry.order(sql('lower(name)'))
     const pat = likePattern(str)
     qry = qry.where(sql.like('name', pat))
+    if (opts.limits.single) {
+      qry = qry.limit(opts.limits.single)
+    }
+
     return qry
   }
 
-  lookup(str) {
-    const qry = this.lookupQuery(str)
-    return this.query(qry.toString())
-  }
-
-  lookupAugmented(str) {
-    const irecs = this.lookup(str)
-    const arecs = irecs.map(r => this.augment(r))
-    return arecs
+  lookup(str, opts) {
+    const qry = this.lookupQuery(str, opts)
+    const out = this.query(qry.toString())
+    if (opts.unagumented) {
+      return out
+    } else {
+      return out.map(r => this.augment(r))
+    }
   }
 
   augment(idxRec) {
     const augRec = Object.assign({}, idxRec)
     augRec.set = this.docset.name
     augRec.link = this.docset.getLinkTo(augRec.path)
+    // XXX: gate this behind opts flag
+    augRec.file = this.docset.getFullPathTo(augRec.path)
     return augRec
   }
 }
