@@ -92,6 +92,22 @@ class DocsetHandle {
     augRec.file = this.docset.getFullPathTo(augRec.path)
     return augRec
   }
+
+  size() {
+    const qry = sql.select('count(0)').from('searchIndex')
+    const stmt = this.handle.prepare(qry.toString())
+    const data = stmt.get()
+    const val = data['count(0)']
+    return val
+  }
+
+  info() {
+    const out = {
+      name: this.docset.name,
+      size: this.size()
+    }
+    return out
+  }
 }
 
 function openHandle(target) {
