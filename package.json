@@ -1,6 +1,6 @@
 {
   "name": "docset",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "wraps docset on disk",
   "main": "index.js",
   "author": "dmr",
