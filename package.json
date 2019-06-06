@@ -6,6 +6,9 @@
   "author": "dmr",
   "license": "WTFPL",
   "homepage": "https://github.com/dradetsky/docset#readme",
+  "scripts": {
+    "fix": "standard --fix"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dradetsky/docset.git"

@@ -4,7 +4,7 @@ const Database = require('better-sqlite3')
 const sql = require('sql-bricks-sqlite')
 
 // not sure how we'll do this yet so wrap in a layer
-function info(...msg) {
+function info (...msg) {
   console.log(...msg)
 }
 
@@ -33,17 +33,17 @@ class Docset {
     return path.join(this.dsRoot, 'Contents/Resources/Documents')
   }
 
-  getFullPathTo(idxPath) {
+  getFullPathTo (idxPath) {
     const fullPath = path.join(this.docRoot, idxPath)
     return fullPath
   }
 
-  getRelativePathTo(idxPath) {
+  getRelativePathTo (idxPath) {
     const relPath = path.join(this.basename, idxPath)
     return relPath
   }
 
-  getLinkTo(idxPath) {
+  getLinkTo (idxPath) {
     const link = path.join(this.basename, 'Contents/Resources/Documents', idxPath)
     return link
   }
@@ -66,7 +66,7 @@ class DocsetHandle {
     return data
   }
 
-  lookupQuery(str, opts) {
+  lookupQuery (str, opts) {
     let qry = sql.select().from('searchIndex')
     qry = qry.order(sql('length(name)'))
     qry = qry.order(sql('lower(name)'))
@@ -79,7 +79,7 @@ class DocsetHandle {
     return qry
   }
 
-  lookup(str, opts) {
+  lookup (str, opts) {
     const qry = this.lookupQuery(str, opts)
     const out = this.query(qry.toString())
     if (opts.unagumented) {
@@ -89,7 +89,7 @@ class DocsetHandle {
     }
   }
 
-  augment(idxRec) {
+  augment (idxRec) {
     const augRec = Object.assign({}, idxRec)
     augRec.set = this.docset.name
     augRec.link = this.docset.getLinkTo(augRec.path)
@@ -106,27 +106,28 @@ class DocsetHandle {
     return out
   }
 
-  sanityCheck() {
+  sanityCheck () {
     try {
       return this.size
     } catch (err) {
       info(this.docset.basename, 'probably lacks searchIndex')
+      return undefined
     }
   }
 }
 
-function openHandle(target) {
+function openHandle (target) {
   const h = new Database(target, { readonly: true })
   return h
 }
 
-function  likePattern(str) {
+function likePattern (str) {
   const regex = / +/g
   const out = str.replace(regex, '%')
   return `%${out}%`
 }
 
-function makeDocsetConvenienceFn(dsRoot) {
+function makeDocsetConvenienceFn (dsRoot) {
   const ds = new Docset(dsRoot)
   const dh = new DocsetHandle(ds)
   return dh
