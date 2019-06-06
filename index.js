@@ -98,26 +98,18 @@ class DocsetHandle {
     return augRec
   }
 
-  size() {
-    const qry = sql.select('count(0)').from('searchIndex')
-    const stmt = this.handle.prepare(qry.toString())
-    const data = stmt.get()
-    const val = data['count(0)']
-    return val
-  }
-
-  info() {
+  info () {
     const out = {
       name: this.docset.name,
-      size: this.size()
+      size: this.size
     }
     return out
   }
 
   sanityCheck() {
     try {
-      this.size()
-    } catch(err) {
+      return this.size
+    } catch (err) {
       info(this.docset.basename, 'probably lacks searchIndex')
     }
   }
