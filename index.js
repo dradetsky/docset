@@ -3,6 +3,11 @@ const path = require('path')
 const Database = require('better-sqlite3')
 const sql = require('sql-bricks-sqlite')
 
+// not sure how we'll do this yet so wrap in a layer
+function info(...msg) {
+  console.log(...msg)
+}
+
 class Docset {
   constructor (dsRoot) {
     this.dsRoot = dsRoot
@@ -107,6 +112,14 @@ class DocsetHandle {
       size: this.size()
     }
     return out
+  }
+
+  sanityCheck() {
+    try {
+      this.size()
+    } catch(err) {
+      info(this.docset.basename, 'probably lacks searchIndex')
+    }
   }
 }
 
