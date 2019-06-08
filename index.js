@@ -60,6 +60,13 @@ class DocsetHandle {
     return out[0]['count(0)']
   }
 
+  get sizeByType () {
+    let qry = sql.select('type', 'count(0) as count')
+    qry = qry.from('searchIndex').group('type')
+    const out = this.query(qry.toString())
+    return out
+  }
+
   query (qstr) {
     const stmt = this.handle.prepare(qstr)
     const data = stmt.all()
@@ -101,7 +108,8 @@ class DocsetHandle {
   info () {
     const out = {
       name: this.docset.name,
-      size: this.size
+      size: this.size,
+      types: this.sizeByType
     }
     return out
   }
